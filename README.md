@@ -1,6 +1,6 @@
 # react-3d-model
 
-> 加载 3D 模型的 react 组件。预览地址：https://xiaxiangfeng.github.io/react-carousel3d/#/carousel
+> 加载 3D 模型的 react 组件。预览地址：https://xiaxiangfeng.github.io/react-3d-model/index.html#/
 
 ## Getting Started
 
