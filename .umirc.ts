@@ -63,7 +63,7 @@ export default defineConfig({
     },
     {
       title: 'GitHub',
-      path: 'https://github.com/umijs/dumi',
+      path: 'https://github.com/xiaxiangfeng/react-3d-model',
     },
   ],
   publicPath: './',
