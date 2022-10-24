@@ -1,6 +1,29 @@
 # react-3d-model
 
-> 加载 3D 模型的 react 组件。预览地址：https://xiaxiangfeng.github.io/react-3d-model/index.html#/
+> 3D models viewer with react.js。文档地址：https://xiaxiangfeng.github.io/react-3d-model/index.html#/
+
+![Image text](https://xiaxiangfeng.github.io/react-3d-model/Animation.gif)
+
+## 从 NPM 下载包
+
+```npm
+npm i react-3d-model
+```
+
+## Basic usage
+
+```tsx
+import React from 'react';
+import Model from 'react-3d-model';
+
+export default () => (
+  <div style={{ maxWidth: 800, width: '100%', height: 400, margin: 'auto' }}>
+    <Model.FBX src="./Samba%20Dancing.fbx" />
+  </div>
+);
+```
+
+Demo:
 
 ## Getting Started
 

@@ -1,7 +1,27 @@
 {
-  "private": true,
+  "private": false,
   "name": "react-3d-model",
   "version": "1.0.0",
+  "description": "3D models viewer with react.js",
+  "author": "xiaxiangfeng",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xiaxiangfeng/react-3d-model.git"
+  },
+  "keywords": [
+    "react",
+    "react-component",
+    "component",
+    "components",
+    "react-3d-model",
+    "model",
+    "3d-model"
+  ],
+  "bugs": {
+    "url": "https://github.com/xiaxiangfeng/react-3d-model/issues"
+  },
+  "homepage": "https://github.com/xiaxiangfeng/react-3d-model",
   "scripts": {
     "start": "dumi dev",
     "docs:build": "dumi build",
