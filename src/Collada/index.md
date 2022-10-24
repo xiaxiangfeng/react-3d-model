@@ -10,7 +10,7 @@ Demo:
 
 ```tsx
 import React from 'react';
-import Model from 'react-3d-model';
+import Model from 'react-3dmodelx';
 
 export default () => {
   return (

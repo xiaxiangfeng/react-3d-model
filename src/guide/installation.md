@@ -13,17 +13,17 @@ nav:
 使用 NPM:
 
 ```bash
-npm install react-3d-model --save
+npm install react-3dmodelx --save
 ```
 
 使用 Yarn:
 
 ```bash
-yarn add react-3d-model
+yarn add react-3dmodelx
 ```
 
 使用 PNPM:
 
 ```bash
-pnpm install react-3d-model
+pnpm install react-3dmodelx
 ```

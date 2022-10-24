@@ -1,7 +1,7 @@
 {
   "private": false,
-  "name": "react-3d-model",
-  "version": "1.0.0",
+  "name": "react-3dmodelx",
+  "version": "1.0.2",
   "description": "3D models viewer with react.js",
   "author": "xiaxiangfeng",
   "license": "MIT",
@@ -14,7 +14,9 @@
     "react-component",
     "component",
     "components",
+    "react-3dmodelx",
     "react-3d-model",
+    "react-3dmodel",
     "model",
     "3d-model"
   ],
