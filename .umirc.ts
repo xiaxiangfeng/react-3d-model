@@ -52,6 +52,10 @@ export default defineConfig({
             title: 'STL格式',
             path: '/guide/stl',
           },
+          {
+            title: '模型组',
+            path: '/guide/Group',
+          },
         ],
       },
     ],
