@@ -41,6 +41,7 @@ function useScene(canvas: any, backgroundColor: string, isRotation?: boolean) {
 
     cameraRef.current = camera;
 
+    camera.up.set(0, 1, 0);
     camera.position.set(0, 0, 0);
 
     const scene = new THREE.Scene();
@@ -63,6 +64,7 @@ function useScene(canvas: any, backgroundColor: string, isRotation?: boolean) {
     renderer.outputEncoding = THREE.sRGBEncoding;
 
     const controls = new OrbitControls(camera, renderer.domElement);
+
     controls.addEventListener('change', render); // use if there is no animation loop
     controls.update();
 
