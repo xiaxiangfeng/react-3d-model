@@ -6,7 +6,8 @@ import useScene from "../useScene";
 
 function GLTF(_ref, ref) {
   var src = _ref.src,
-      backgroundColor = _ref.backgroundColor;
+      backgroundColor = _ref.backgroundColor,
+      onLoad = _ref.onLoad;
   var canvasRef = useRef(null);
 
   var _useScene = useScene(canvasRef, backgroundColor),
@@ -31,6 +32,7 @@ function GLTF(_ref, ref) {
     scene.current && (scene.current.environment = pmremGenerator.fromScene(environment, 0.04).texture);
     var loader = new GLTFLoader();
     loader.load(src, function (gltf) {
+      onLoad && onLoad();
       add2Scene(gltf.scene);
       render();
     });

@@ -5,7 +5,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import useScene from '../useScene';
 
 function GLTF(
-  { src, backgroundColor }: { src: string; backgroundColor: string },
+  { src, backgroundColor, onLoad }: { src: string; backgroundColor: string; onLoad: any },
   ref?: React.Ref<unknown>,
 ) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -28,6 +28,7 @@ function GLTF(
 
     const loader = new GLTFLoader();
     loader.load(src, function (gltf) {
+      onLoad && onLoad();
       add2Scene(gltf.scene);
       render();
     });

@@ -5,7 +5,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import useScene from '../useScene';
 
 function Group(
-  { list, backgroundColor }: { list: string[]; backgroundColor: string },
+  { list, backgroundColor, onLoad }: { list: string[]; backgroundColor: string; onLoad: any },
   ref?: React.Ref<unknown>,
 ) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -28,12 +28,19 @@ function Group(
 
     scene.current?.add(directionalLight);
 
+    let loadCount = 0;
+    let modelCount = list.length;
+
     list.forEach((url) => {
       const lowerUrl = url.toLowerCase();
 
       if (lowerUrl.endsWith('fbx')) {
         const loader = new FBXLoader();
         loader.load(url, function (data: any) {
+          loadCount = loadCount + 1;
+          if (loadCount === modelCount) {
+            onLoad && onLoad();
+          }
           add2Scene(data);
           animate();
         });
@@ -41,11 +48,19 @@ function Group(
       if (lowerUrl.endsWith('gltf') || lowerUrl.endsWith('glb')) {
         const loader = new GLTFLoader();
         loader.load(url, function (gltf: any) {
+          loadCount = loadCount + 1;
+          if (loadCount === modelCount) {
+            onLoad && onLoad();
+          }
           add2Scene(gltf.scene);
           render();
         });
       }
     });
+
+    return () => {
+      loadCount = 0;
+    };
   }, []);
 
   return <canvas ref={canvasRef} style={{ width: '100%', height: '100%' }} />;

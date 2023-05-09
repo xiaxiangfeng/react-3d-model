@@ -1,10 +1,11 @@
 import React, { useRef, useEffect, useImperativeHandle, forwardRef } from 'react';
 import * as THREE from 'three';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import useScene from "../useScene";
 
-function FBX(_ref, ref) {
-  var src = _ref.src,
+function Group(_ref, ref) {
+  var list = _ref.list,
       backgroundColor = _ref.backgroundColor,
       onLoad = _ref.onLoad;
   var canvasRef = useRef(null);
@@ -34,12 +35,43 @@ function FBX(_ref, ref) {
     var directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
     directionalLight.position.set(1, 1, 0).normalize();
     (_scene$current2 = scene.current) === null || _scene$current2 === void 0 ? void 0 : _scene$current2.add(directionalLight);
-    var loader = new FBXLoader();
-    loader.load(src, function (data) {
-      onLoad && onLoad();
-      add2Scene(data);
-      animate();
+    var loadCount = 0;
+    var modelCount = list.length;
+    list.forEach(function (url) {
+      var lowerUrl = url.toLowerCase();
+
+      if (lowerUrl.endsWith('fbx')) {
+        var loader = new FBXLoader();
+        loader.load(url, function (data) {
+          loadCount = loadCount + 1;
+
+          if (loadCount === modelCount) {
+            onLoad && onLoad();
+          }
+
+          add2Scene(data);
+          animate();
+        });
+      }
+
+      if (lowerUrl.endsWith('gltf') || lowerUrl.endsWith('glb')) {
+        var _loader = new GLTFLoader();
+
+        _loader.load(url, function (gltf) {
+          loadCount = loadCount + 1;
+
+          if (loadCount === modelCount) {
+            onLoad && onLoad();
+          }
+
+          add2Scene(gltf.scene);
+          render();
+        });
+      }
     });
+    return function () {
+      loadCount = 0;
+    };
   }, []);
   return /*#__PURE__*/React.createElement("canvas", {
     ref: canvasRef,
@@ -50,4 +82,4 @@ function FBX(_ref, ref) {
   });
 }
 
-export default /*#__PURE__*/forwardRef(FBX);
+export default /*#__PURE__*/forwardRef(Group);

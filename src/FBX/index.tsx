@@ -4,7 +4,7 @@ import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 import useScene from '../useScene';
 
 function FBX(
-  { src, backgroundColor }: { src: string; backgroundColor: string },
+  { src, backgroundColor, onLoad }: { src: string; backgroundColor: string; onLoad: any },
   ref?: React.Ref<unknown>,
 ) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -29,6 +29,7 @@ function FBX(
 
     const loader = new FBXLoader();
     loader.load(src, function (data) {
+      onLoad && onLoad();
       add2Scene(data);
       animate();
     });

@@ -5,7 +5,8 @@ import useScene from "../useScene";
 
 function OBJ(_ref, ref) {
   var src = _ref.src,
-      backgroundColor = _ref.backgroundColor;
+      backgroundColor = _ref.backgroundColor,
+      onLoad = _ref.onLoad;
   var canvasRef = useRef(null);
 
   var _useScene = useScene(canvasRef, backgroundColor),
@@ -35,6 +36,7 @@ function OBJ(_ref, ref) {
     (_scene$current2 = scene.current) === null || _scene$current2 === void 0 ? void 0 : _scene$current2.add(directionalLight);
     var loader = new OBJLoader();
     loader.load(src, function (data) {
+      onLoad && onLoad();
       add2Scene(data);
       animate();
     });

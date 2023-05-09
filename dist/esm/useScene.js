@@ -34,6 +34,7 @@ function useScene(canvas, backgroundColor, isRotation) {
         offsetWidth = _canvas$current.offsetWidth;
     var camera = new THREE.PerspectiveCamera(45, offsetWidth / offsetHeight, 0.01, 100000);
     cameraRef.current = camera;
+    camera.up.set(0, 1, 0);
     camera.position.set(0, 0, 0);
     var scene = new THREE.Scene();
     scene.background = new THREE.Color(backgroundColor || 0xbbbbbb);

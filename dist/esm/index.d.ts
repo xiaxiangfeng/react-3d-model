@@ -20,5 +20,9 @@ declare const _default: {
     } & import("react").RefAttributes<unknown>>;
     PLY: typeof PLY;
     STL: typeof STL;
+    Group: import("react").ForwardRefExoticComponent<{
+        list: string[];
+        backgroundColor: string;
+    } & import("react").RefAttributes<unknown>>;
 };
 export default _default;

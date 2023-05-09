@@ -4,7 +4,7 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import useScene from '../useScene';
 
 function OBJ(
-  { src, backgroundColor }: { src: string; backgroundColor: string },
+  { src, backgroundColor, onLoad }: { src: string; backgroundColor: string; onLoad: any },
   ref?: React.Ref<unknown>,
 ) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -29,6 +29,7 @@ function OBJ(
 
     const loader = new OBJLoader();
     loader.load(src, function (data) {
+      onLoad && onLoad();
       add2Scene(data);
       animate();
     });
