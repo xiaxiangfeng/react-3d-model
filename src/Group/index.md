@@ -14,7 +14,13 @@ import Model from 'react-3dmodelx';
 
 export default () => (
   <div style={{ maxWidth: 800, width: '100%', height: 400, margin: 'auto' }}>
-    <Model.Group list={['./chair1.gltf', './chair.gltf']} onLoad={() => {}} />
+    <Model.Group
+      list={[
+        { url: './chair1.gltf', type: 'gltf' },
+        { url: './chair.gltf', type: 'gltf' },
+      ]}
+      onLoad={() => {}}
+    />
   </div>
 );
 ```

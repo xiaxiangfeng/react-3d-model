@@ -1,3 +1,5 @@
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
 import React, { useRef, useEffect, useImperativeHandle, forwardRef } from 'react';
 import * as THREE from 'three';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
@@ -37,10 +39,23 @@ function Group(_ref, ref) {
     (_scene$current2 = scene.current) === null || _scene$current2 === void 0 ? void 0 : _scene$current2.add(directionalLight);
     var loadCount = 0;
     var modelCount = list.length;
-    list.forEach(function (url) {
-      var lowerUrl = url.toLowerCase();
+    list.forEach(function (data) {
+      var url = '';
+      var type = '';
 
-      if (lowerUrl.endsWith('fbx')) {
+      if (typeof data === 'string') {
+        url = data;
+      }
+
+      if (_typeof(data) === 'object') {
+        url = data.url;
+        type = data.type;
+      }
+
+      var lowerUrl = url.toLowerCase();
+      var lowerType = type.toLowerCase();
+
+      if (lowerUrl.endsWith('fbx') || lowerType === 'fbx') {
         var loader = new FBXLoader();
         loader.load(url, function (data) {
           loadCount = loadCount + 1;
@@ -54,7 +69,7 @@ function Group(_ref, ref) {
         });
       }
 
-      if (lowerUrl.endsWith('gltf') || lowerUrl.endsWith('glb')) {
+      if (lowerUrl.endsWith('gltf') || lowerUrl.endsWith('glb') || lowerType === 'glb' || lowerType === 'gltf') {
         var _loader = new GLTFLoader();
 
         _loader.load(url, function (gltf) {

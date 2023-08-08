@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useImperativeHandle, forwardRef } from 'react
 import * as THREE from 'three';
 import { ColladaLoader } from 'three/examples/jsm/loaders/ColladaLoader';
 import useScene from '../useScene';
-
+import conf from '../conf';
 function Collada(
   {
     src,
@@ -27,10 +27,13 @@ function Collada(
   }));
 
   useEffect(() => {
-    const ambientLight = new THREE.AmbientLight(0xcccccc, 0.4);
+    const ambientLight = new THREE.AmbientLight(conf.ambientLightColor, conf.ambientLightIntensity);
     scene.current?.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    const directionalLight = new THREE.DirectionalLight(
+      conf.directionalLightColor,
+      conf.directionalIntensity,
+    );
     directionalLight.position.set(1, 1, 0).normalize();
 
     scene.current?.add(directionalLight);

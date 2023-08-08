@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import useScene from '../useScene';
+import conf from '../conf';
 
 function GLTF(
   { src, backgroundColor, onLoad }: { src: string; backgroundColor: string; onLoad: any },
@@ -20,11 +21,16 @@ function GLTF(
   }));
 
   useEffect(() => {
-    const environment = new RoomEnvironment();
-    const pmremGenerator = new THREE.PMREMGenerator(renderer.current as THREE.WebGLRenderer);
+    const ambientLight = new THREE.AmbientLight(conf.ambientLightColor, conf.ambientLightIntensity);
+    scene.current?.add(ambientLight);
 
-    scene.current &&
-      (scene.current.environment = pmremGenerator.fromScene(environment, 0.04).texture);
+    const directionalLight = new THREE.DirectionalLight(
+      conf.directionalLightColor,
+      conf.directionalIntensity,
+    );
+    directionalLight.position.set(1, 1, 0).normalize();
+
+    scene.current?.add(directionalLight);
 
     const loader = new GLTFLoader();
     loader.load(src, function (gltf) {

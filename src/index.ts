@@ -6,4 +6,12 @@ import PLY from './PLY';
 import STL from './STL';
 import Group from './Group';
 
-export default { GLTF, Collada, FBX, OBJ, PLY, STL, Group };
+export default {
+  GLTF,
+  Collada,
+  FBX,
+  OBJ,
+  PLY,
+  STL,
+  Group,
+} as any;

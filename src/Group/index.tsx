@@ -3,9 +3,18 @@ import * as THREE from 'three';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import useScene from '../useScene';
+import conf from '../conf';
+interface model {
+  url: string;
+  type: string;
+}
 
 function Group(
-  { list, backgroundColor, onLoad }: { list: string[]; backgroundColor: string; onLoad: any },
+  {
+    list,
+    backgroundColor,
+    onLoad,
+  }: { list: string[] | model[]; backgroundColor: string; onLoad: any },
   ref?: React.Ref<unknown>,
 ) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -20,10 +29,13 @@ function Group(
   }));
 
   useEffect(() => {
-    const ambientLight = new THREE.AmbientLight(0xcccccc, 0.4);
+    const ambientLight = new THREE.AmbientLight(conf.ambientLightColor, conf.ambientLightIntensity);
     scene.current?.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    const directionalLight = new THREE.DirectionalLight(
+      conf.directionalLightColor,
+      conf.directionalIntensity,
+    );
     directionalLight.position.set(1, 1, 0).normalize();
 
     scene.current?.add(directionalLight);
@@ -31,10 +43,23 @@ function Group(
     let loadCount = 0;
     let modelCount = list.length;
 
-    list.forEach((url) => {
-      const lowerUrl = url.toLowerCase();
+    list.forEach((data) => {
+      let url = '';
+      let type = '';
 
-      if (lowerUrl.endsWith('fbx')) {
+      if (typeof data === 'string') {
+        url = data;
+      }
+
+      if (typeof data === 'object') {
+        url = data.url;
+        type = data.type;
+      }
+
+      const lowerUrl = url.toLowerCase();
+      const lowerType = type.toLowerCase();
+
+      if (lowerUrl.endsWith('fbx') || lowerType === 'fbx') {
         const loader = new FBXLoader();
         loader.load(url, function (data: any) {
           loadCount = loadCount + 1;
@@ -45,7 +70,12 @@ function Group(
           animate();
         });
       }
-      if (lowerUrl.endsWith('gltf') || lowerUrl.endsWith('glb')) {
+      if (
+        lowerUrl.endsWith('gltf') ||
+        lowerUrl.endsWith('glb') ||
+        lowerType === 'glb' ||
+        lowerType === 'gltf'
+      ) {
         const loader = new GLTFLoader();
         loader.load(url, function (gltf: any) {
           loadCount = loadCount + 1;
