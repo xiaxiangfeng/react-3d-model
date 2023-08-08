@@ -18,16 +18,30 @@ function GLTF(
       render();
       return renderer.current?.domElement.toDataURL('image/png', 1);
     },
+    setLight: (type: 'directionalLight' | 'ambientLight', color?: string, intensity?: number) => {
+      const light: any = scene.current?.getObjectByName(type);
+      if (light) {
+        if (color !== undefined) {
+          light.color = new THREE.Color(color);
+        }
+        if (intensity !== undefined) {
+          light.intensity = intensity;
+        }
+        render();
+      }
+    },
   }));
 
   useEffect(() => {
     const ambientLight = new THREE.AmbientLight(conf.ambientLightColor, conf.ambientLightIntensity);
+    ambientLight.name = 'ambientLight';
     scene.current?.add(ambientLight);
-
+    console.log(scene.current);
     const directionalLight = new THREE.DirectionalLight(
       conf.directionalLightColor,
       conf.directionalIntensity,
     );
+    directionalLight.name = 'directionalLight';
     directionalLight.position.set(1, 1, 0).normalize();
 
     scene.current?.add(directionalLight);
