@@ -16,7 +16,10 @@ function FBX(
       render();
       return renderer.current?.domElement.toDataURL('image/png', 1);
     },
-    setLight: (type: 'directionalLight' | 'ambientLight', color?: string, intensity?: number) => {
+    setLight: (
+      type: 'directionalLight' | 'ambientLight',
+      { color, intensity }: { color?: string; intensity?: number },
+    ) => {
       const light: any = scene.current?.getObjectByName(type);
       if (light) {
         if (color !== undefined) {

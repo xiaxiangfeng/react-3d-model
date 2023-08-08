@@ -15,7 +15,7 @@ import Model from 'react-3dmodelx';
 export default () => {
   const modelRef = useRef(null);
   const setLight = (color) => {
-    modelRef.current.setLight('ambientLight', color, 2);
+    modelRef.current.setLight('ambientLight', { color, intensity: 2 });
   };
   return (
     <div style={{ maxWidth: 800, width: '100%', height: 400, margin: 'auto' }}>
