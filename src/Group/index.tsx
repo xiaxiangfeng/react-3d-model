@@ -44,6 +44,7 @@ function Group(
   }));
 
   useEffect(() => {
+    const group = new THREE.Group();
     const ambientLight = new THREE.AmbientLight(conf.ambientLightColor, conf.ambientLightIntensity);
     ambientLight.name = 'ambientLight';
     scene.current?.add(ambientLight);
@@ -79,12 +80,13 @@ function Group(
       if (lowerUrl.endsWith('fbx') || lowerType === 'fbx') {
         const loader = new FBXLoader();
         loader.load(url, function (data: any) {
+          group.add(data);
           loadCount = loadCount + 1;
           if (loadCount === modelCount) {
+            add2Scene(group);
+            animate();
             onLoad && onLoad();
           }
-          add2Scene(data);
-          animate();
         });
       }
       if (
@@ -95,12 +97,13 @@ function Group(
       ) {
         const loader = new GLTFLoader();
         loader.load(url, function (gltf: any) {
+          group.add(gltf);
           loadCount = loadCount + 1;
           if (loadCount === modelCount) {
+            add2Scene(group);
+            render();
             onLoad && onLoad();
           }
-          add2Scene(gltf.scene);
-          render();
         });
       }
     });

@@ -39,7 +39,6 @@ function GLTF(
     const ambientLight = new THREE.AmbientLight(conf.ambientLightColor, conf.ambientLightIntensity);
     ambientLight.name = 'ambientLight';
     scene.current?.add(ambientLight);
-    console.log(scene.current);
     const directionalLight = new THREE.DirectionalLight(
       conf.directionalLightColor,
       conf.directionalIntensity,
