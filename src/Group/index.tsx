@@ -19,8 +19,9 @@ function Group(
   ref?: React.Ref<unknown>,
 ) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const initRef = useRef<boolean>(true);
 
-  const { add2Scene, scene, animate, renderer, render } = useScene(
+  const { add2Scene, scene, animate, renderer, render, setProps } = useScene(
     canvasRef,
     backgroundColor,
     isRotation,
@@ -47,6 +48,13 @@ function Group(
       }
     },
   }));
+
+  useEffect(() => {
+    if (initRef.current === false) {
+      setProps({ backgroundColor, isRotation });
+    }
+    initRef.current = false;
+  }, [backgroundColor, isRotation]);
 
   useEffect(() => {
     const group = new THREE.Group();
