@@ -16,13 +16,19 @@ function getCenter(object: THREE.Object3D) {
   return box.getCenter(new THREE.Vector3());
 }
 
-function useScene(canvas: any, backgroundColor: string, isRotation?: boolean) {
+function useScene(
+  canvas: any,
+  backgroundColor: string,
+  isRotation?: boolean,
+  rotationAxis?: string,
+) {
   let sceneRef = useRef<THREE.Scene>();
   let rendererRef = useRef<THREE.WebGLRenderer>();
   let cameraRef = useRef<THREE.PerspectiveCamera>();
   const timer = useRef<number>();
   const mixer = useRef<THREE.AnimationMixer>();
   const model = useRef<any>();
+  const isRotationRef = useRef<boolean>(isRotation || false);
 
   const clock = useMemo(() => {
     return new THREE.Clock();
@@ -100,15 +106,26 @@ function useScene(canvas: any, backgroundColor: string, isRotation?: boolean) {
     const delta = clock.getDelta();
 
     mixer.current?.update(delta);
-
-    if (isRotation && model.current) {
-      model.current.rotation.z += delta * 0.5;
+    if (isRotationRef.current && model.current) {
+      model.current.rotation[rotationAxis || 'y'] += delta * 0.5;
     }
 
     render();
   }, []);
 
-  return { add2Scene, scene: sceneRef, renderer: rendererRef, render, animate };
+  const setProps = useCallback(
+    ({ isRotation, backgroundColor }: { isRotation?: boolean; backgroundColor?: string }) => {
+      if (typeof isRotation !== undefined) {
+        isRotationRef.current = isRotation || false;
+      }
+      if (backgroundColor && sceneRef.current) {
+        sceneRef.current.background = new THREE.Color(backgroundColor);
+      }
+    },
+    [],
+  );
+
+  return { add2Scene, scene: sceneRef, renderer: rendererRef, render, animate, setProps };
 }
 
 export default useScene;

@@ -7,5 +7,6 @@ declare const _default: React.ForwardRefExoticComponent<{
     list: string[] | model[];
     backgroundColor: string;
     onLoad: any;
+    isRotation?: boolean | undefined;
 } & React.RefAttributes<unknown>>;
 export default _default;

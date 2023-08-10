@@ -6,12 +6,21 @@ import useScene from '../useScene';
 import conf from '../conf';
 
 function GLTF(
-  { src, backgroundColor, onLoad }: { src: string; backgroundColor: string; onLoad: any },
+  {
+    src,
+    backgroundColor,
+    onLoad,
+    isRotation,
+  }: { src: string; backgroundColor: string; onLoad: any; isRotation?: boolean },
   ref?: React.Ref<unknown>,
 ) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  const { add2Scene, scene, renderer, render } = useScene(canvasRef, backgroundColor);
+  const initRef = useRef<boolean>(true);
+  const { add2Scene, scene, renderer, render, animate, setProps } = useScene(
+    canvasRef,
+    backgroundColor,
+    isRotation,
+  );
 
   useImperativeHandle(ref, () => ({
     getSnapshot: () => {
@@ -36,6 +45,13 @@ function GLTF(
   }));
 
   useEffect(() => {
+    if (initRef.current === false) {
+      setProps({ backgroundColor, isRotation });
+    }
+    initRef.current = false;
+  }, [backgroundColor, isRotation]);
+
+  useEffect(() => {
     const ambientLight = new THREE.AmbientLight(conf.ambientLightColor, conf.ambientLightIntensity);
     ambientLight.name = 'ambientLight';
     scene.current?.add(ambientLight);
@@ -52,7 +68,7 @@ function GLTF(
     loader.load(src, function (gltf) {
       onLoad && onLoad();
       add2Scene(gltf.scene);
-      render();
+      animate();
     });
   }, []);
 

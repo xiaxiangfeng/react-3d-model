@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useImperativeHandle, forwardRef } from 'react
 import * as THREE from 'three';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import useScene from "../useScene";
+import conf from "../conf";
 
 function OBJ(_ref, ref) {
   var src = _ref.src,
@@ -29,9 +30,9 @@ function OBJ(_ref, ref) {
   useEffect(function () {
     var _scene$current, _scene$current2;
 
-    var ambientLight = new THREE.AmbientLight(0xcccccc, 0.4);
+    var ambientLight = new THREE.AmbientLight(conf.ambientLightColor, conf.ambientLightIntensity);
     (_scene$current = scene.current) === null || _scene$current === void 0 ? void 0 : _scene$current.add(ambientLight);
-    var directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    var directionalLight = new THREE.DirectionalLight(conf.directionalLightColor, conf.directionalIntensity);
     directionalLight.position.set(1, 1, 0).normalize();
     (_scene$current2 = scene.current) === null || _scene$current2 === void 0 ? void 0 : _scene$current2.add(directionalLight);
     var loader = new OBJLoader();

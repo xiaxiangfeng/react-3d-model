@@ -4,12 +4,21 @@ import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 import useScene from '../useScene';
 import conf from '../conf';
 function FBX(
-  { src, backgroundColor, onLoad }: { src: string; backgroundColor: string; onLoad: any },
+  {
+    src,
+    backgroundColor,
+    onLoad,
+    isRotation,
+  }: { src: string; backgroundColor: string; onLoad: any; isRotation?: boolean },
   ref?: React.Ref<unknown>,
 ) {
+  const initRef = useRef<boolean>(true);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  const { add2Scene, scene, animate, renderer, render } = useScene(canvasRef, backgroundColor);
+  const { add2Scene, scene, animate, renderer, render, setProps } = useScene(
+    canvasRef,
+    backgroundColor,
+    isRotation,
+  );
 
   useImperativeHandle(ref, () => ({
     getSnapshot: () => {
@@ -32,6 +41,13 @@ function FBX(
       }
     },
   }));
+
+  useEffect(() => {
+    if (initRef.current === false) {
+      setProps({ backgroundColor, isRotation });
+    }
+    initRef.current = false;
+  }, [backgroundColor, isRotation]);
 
   useEffect(() => {
     const ambientLight = new THREE.AmbientLight(conf.ambientLightColor, conf.ambientLightIntensity);

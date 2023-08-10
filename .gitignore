@@ -24,3 +24,7 @@
 # ide
 /.vscode
 /.idea
+
+FBX_file
+
+/dist

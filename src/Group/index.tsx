@@ -14,12 +14,17 @@ function Group(
     list,
     backgroundColor,
     onLoad,
-  }: { list: string[] | model[]; backgroundColor: string; onLoad: any },
+    isRotation,
+  }: { list: string[] | model[]; backgroundColor: string; onLoad: any; isRotation?: boolean },
   ref?: React.Ref<unknown>,
 ) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const { add2Scene, scene, animate, renderer, render } = useScene(canvasRef, backgroundColor);
+  const { add2Scene, scene, animate, renderer, render } = useScene(
+    canvasRef,
+    backgroundColor,
+    isRotation,
+  );
 
   useImperativeHandle(ref, () => ({
     getSnapshot: () => {
@@ -97,11 +102,11 @@ function Group(
       ) {
         const loader = new GLTFLoader();
         loader.load(url, function (gltf: any) {
-          group.add(gltf);
+          group.add(gltf.scene);
           loadCount = loadCount + 1;
           if (loadCount === modelCount) {
             add2Scene(group);
-            render();
+            animate();
             onLoad && onLoad();
           }
         });

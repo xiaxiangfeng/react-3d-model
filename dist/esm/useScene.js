@@ -1,3 +1,5 @@
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
 import { useEffect, useCallback, useRef, useMemo } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
@@ -13,13 +15,14 @@ function getCenter(object) {
   return box.getCenter(new THREE.Vector3());
 }
 
-function useScene(canvas, backgroundColor, isRotation) {
+function useScene(canvas, backgroundColor, isRotation, rotationAxis) {
   var sceneRef = useRef();
   var rendererRef = useRef();
   var cameraRef = useRef();
   var timer = useRef();
   var mixer = useRef();
   var model = useRef();
+  var isRotationRef = useRef(isRotation || false);
   var clock = useMemo(function () {
     return new THREE.Clock();
   }, []);
@@ -45,10 +48,10 @@ function useScene(canvas, backgroundColor, isRotation) {
     });
     rendererRef.current = renderer;
     renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(offsetWidth, offsetHeight);
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1;
-    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.setSize(offsetWidth, offsetHeight); // renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    // renderer.toneMappingExposure = 1;
+    // renderer.outputEncoding = THREE.sRGBEncoding;
+
     var controls = new OrbitControls(camera, renderer.domElement);
     controls.addEventListener('change', render); // use if there is no animation loop
 
@@ -84,18 +87,31 @@ function useScene(canvas, backgroundColor, isRotation) {
     var delta = clock.getDelta();
     (_mixer$current = mixer.current) === null || _mixer$current === void 0 ? void 0 : _mixer$current.update(delta);
 
-    if (isRotation && model.current) {
-      model.current.rotation.z += delta * 0.5;
+    if (isRotationRef.current && model.current) {
+      model.current.rotation[rotationAxis || 'y'] += delta * 0.5;
     }
 
     render();
+  }, []);
+  var setProps = useCallback(function (_ref) {
+    var isRotation = _ref.isRotation,
+        backgroundColor = _ref.backgroundColor;
+
+    if (_typeof(isRotation) !== undefined) {
+      isRotationRef.current = isRotation || false;
+    }
+
+    if (backgroundColor && sceneRef.current) {
+      sceneRef.current.background = new THREE.Color(backgroundColor);
+    }
   }, []);
   return {
     add2Scene: add2Scene,
     scene: sceneRef,
     renderer: rendererRef,
     render: render,
-    animate: animate
+    animate: animate,
+    setProps: setProps
   };
 }
 

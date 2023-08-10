@@ -17,6 +17,7 @@ function Collada(
     canvasRef,
     backgroundColor,
     isRotation,
+    'z',
   );
 
   useImperativeHandle(ref, () => ({
