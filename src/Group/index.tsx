@@ -4,6 +4,7 @@ import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import useScene from '../useScene';
 import conf from '../conf';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 interface model {
   url: string;
   type: string;
@@ -15,7 +16,14 @@ function Group(
     backgroundColor,
     onLoad,
     isRotation,
-  }: { list: string[] | model[]; backgroundColor: string; onLoad: any; isRotation?: boolean },
+    decoderPath,
+  }: {
+    list: string[] | model[];
+    backgroundColor: string;
+    onLoad: any;
+    isRotation?: boolean;
+    decoderPath?: string;
+  },
   ref?: React.Ref<unknown>,
 ) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -109,6 +117,11 @@ function Group(
         lowerType === 'gltf'
       ) {
         const loader = new GLTFLoader();
+        if (decoderPath) {
+          const dracoLoader = new DRACOLoader();
+          dracoLoader.setDecoderPath(decoderPath);
+          loader.setDRACOLoader(dracoLoader);
+        }
         loader.load(url, function (gltf: any) {
           group.add(gltf.scene);
           loadCount = loadCount + 1;

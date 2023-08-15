@@ -4,6 +4,7 @@ import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import useScene from '../useScene';
 import conf from '../conf';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 
 function GLTF(
   {
@@ -11,7 +12,14 @@ function GLTF(
     backgroundColor,
     onLoad,
     isRotation,
-  }: { src: string; backgroundColor: string; onLoad: any; isRotation?: boolean },
+    decoderPath,
+  }: {
+    src: string;
+    backgroundColor: string;
+    onLoad: any;
+    isRotation?: boolean;
+    decoderPath?: string;
+  },
   ref?: React.Ref<unknown>,
 ) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -65,6 +73,12 @@ function GLTF(
     scene.current?.add(directionalLight);
 
     const loader = new GLTFLoader();
+    if (decoderPath) {
+      const dracoLoader = new DRACOLoader();
+      dracoLoader.setDecoderPath(decoderPath);
+      loader.setDRACOLoader(dracoLoader);
+    }
+
     loader.load(src, function (gltf) {
       onLoad && onLoad();
       add2Scene(gltf.scene);
