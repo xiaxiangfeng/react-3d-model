@@ -3,12 +3,14 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import useScene from "../useScene";
 import conf from "../conf";
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 
 function GLTF(_ref, ref) {
   var src = _ref.src,
       backgroundColor = _ref.backgroundColor,
       onLoad = _ref.onLoad,
-      isRotation = _ref.isRotation;
+      isRotation = _ref.isRotation,
+      decoderPath = _ref.decoderPath;
   var canvasRef = useRef(null);
   var initRef = useRef(true);
 
@@ -25,8 +27,9 @@ function GLTF(_ref, ref) {
       getSnapshot: function getSnapshot() {
         var _renderer$current;
 
+        var quality = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0.5;
         render();
-        return (_renderer$current = renderer.current) === null || _renderer$current === void 0 ? void 0 : _renderer$current.domElement.toDataURL('image/png', 1);
+        return (_renderer$current = renderer.current) === null || _renderer$current === void 0 ? void 0 : _renderer$current.domElement.toDataURL('image/jpeg', quality);
       },
       setLight: function setLight(type, _ref2) {
         var _scene$current;
@@ -70,6 +73,13 @@ function GLTF(_ref, ref) {
     directionalLight.position.set(1, 1, 0).normalize();
     (_scene$current3 = scene.current) === null || _scene$current3 === void 0 ? void 0 : _scene$current3.add(directionalLight);
     var loader = new GLTFLoader();
+
+    if (decoderPath) {
+      var dracoLoader = new DRACOLoader();
+      dracoLoader.setDecoderPath(decoderPath);
+      loader.setDRACOLoader(dracoLoader);
+    }
+
     loader.load(src, function (gltf) {
       onLoad && onLoad();
       add2Scene(gltf.scene);

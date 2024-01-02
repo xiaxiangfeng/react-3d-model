@@ -6,28 +6,33 @@ import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import useScene from "../useScene";
 import conf from "../conf";
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 
 function Group(_ref, ref) {
   var list = _ref.list,
       backgroundColor = _ref.backgroundColor,
       onLoad = _ref.onLoad,
-      isRotation = _ref.isRotation;
+      isRotation = _ref.isRotation,
+      decoderPath = _ref.decoderPath;
   var canvasRef = useRef(null);
+  var initRef = useRef(true);
 
   var _useScene = useScene(canvasRef, backgroundColor, isRotation),
       add2Scene = _useScene.add2Scene,
       scene = _useScene.scene,
       animate = _useScene.animate,
       renderer = _useScene.renderer,
-      render = _useScene.render;
+      render = _useScene.render,
+      setProps = _useScene.setProps;
 
   useImperativeHandle(ref, function () {
     return {
       getSnapshot: function getSnapshot() {
         var _renderer$current;
 
+        var quality = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0.5;
         render();
-        return (_renderer$current = renderer.current) === null || _renderer$current === void 0 ? void 0 : _renderer$current.domElement.toDataURL('image/png', 1);
+        return (_renderer$current = renderer.current) === null || _renderer$current === void 0 ? void 0 : _renderer$current.domElement.toDataURL('image/jpeg', quality);
       },
       setLight: function setLight(type, _ref2) {
         var _scene$current;
@@ -50,6 +55,16 @@ function Group(_ref, ref) {
       }
     };
   });
+  useEffect(function () {
+    if (initRef.current === false) {
+      setProps({
+        backgroundColor: backgroundColor,
+        isRotation: isRotation
+      });
+    }
+
+    initRef.current = false;
+  }, [backgroundColor, isRotation]);
   useEffect(function () {
     var _scene$current2, _scene$current3;
 
@@ -95,6 +110,13 @@ function Group(_ref, ref) {
 
       if (lowerUrl.endsWith('gltf') || lowerUrl.endsWith('glb') || lowerType === 'glb' || lowerType === 'gltf') {
         var _loader = new GLTFLoader();
+
+        if (decoderPath) {
+          var dracoLoader = new DRACOLoader();
+          dracoLoader.setDecoderPath(decoderPath);
+
+          _loader.setDRACOLoader(dracoLoader);
+        }
 
         _loader.load(url, function (gltf) {
           group.add(gltf.scene);

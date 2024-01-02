@@ -22,8 +22,9 @@ function Collada(_ref, ref) {
       getSnapshot: function getSnapshot() {
         var _renderer$current;
 
+        var quality = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0.5;
         render();
-        return (_renderer$current = renderer.current) === null || _renderer$current === void 0 ? void 0 : _renderer$current.domElement.toDataURL('image/png', 1);
+        return (_renderer$current = renderer.current) === null || _renderer$current === void 0 ? void 0 : _renderer$current.domElement.toDataURL('image/jpeg', quality);
       }
     };
   });
