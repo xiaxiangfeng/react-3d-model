@@ -31,9 +31,9 @@ function GLTF(
   );
 
   useImperativeHandle(ref, () => ({
-    getSnapshot: () => {
+    getSnapshot: (quality:number = 0.5) => {
       render();
-      return renderer.current?.domElement.toDataURL('image/png', 1);
+      return renderer.current?.domElement.toDataURL('image/jpeg', quality);
     },
     setLight: (
       type: 'directionalLight' | 'ambientLight',
