@@ -67,7 +67,7 @@ function useScene(
     renderer.setSize(offsetWidth, offsetHeight);
     // renderer.toneMapping = THREE.ACESFilmicToneMapping;
     // renderer.toneMappingExposure = 1;
-    // renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.outputEncoding = THREE.sRGBEncoding;
 
     const controls = new OrbitControls(camera, renderer.domElement);
 
